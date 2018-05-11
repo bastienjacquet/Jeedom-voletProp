@@ -3,7 +3,7 @@
 	"name" : "Volet proportionel",
 	"description" : "Ce plugin gère l'ouverture et la fermeture proportionnel de nos volet",
 	"licence" : "AGPL",
-	"author" : "Halbout Michael",
+	"author" : "Halbout Michael, Bastien Jacquet",
 	"require" : "2.4",
 	"category" : "automatisation",
 	"hasOwnDeamon" : true,
