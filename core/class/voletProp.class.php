@@ -112,18 +112,18 @@ class voletProp extends eqLogic {
 		$HauteurActuelle=$this->getCmd(null,'hauteur')->execCmd();
 		if($this->getConfiguration('Inverser'))
 			$HauteurActuelle=100-$HauteurActuelle;
-		if($HauteurActuelle == $Hauteur)
-			return;
 		$temps=$this->TpsAction($Hauteur,$HauteurActuelle);
-		if($HauteurActuelle > $Hauteur){
+		if($HauteurActuelle > $Hauteur || $Hauteur=0){
 			$Down->execute(null);
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet à '.$Hauteur.'% depuis '.$HauteurActuelle.'% ('.$temps.'s)');
-		}else{
+		}else if($HauteurActuelle < $Hauteur || $Hauteur=100){
 			$Up->execute(null);
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet à '.$Hauteur.'% depuis '.$HauteurActuelle.'% ('.$temps.'s)');
 		}
 		sleep($temps);
-		$Stop->execute(null);
+		// Force les positions de bout de course en ne stoppant pas, pour recuperer des cas de désyncronisation;
+		if ($Hauteur != 0 && $Hauteur != 100)
+			$Stop->execute(null);
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		if ($this->getConfiguration('cmdMoveState') == '' && $this->getConfiguration('cmdStopState') == '' )			
 			$this->checkAndUpdateCmd('hauteur',$Hauteur);
